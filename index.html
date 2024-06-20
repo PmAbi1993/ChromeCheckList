@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chores List</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-dark text-white">
+    <div class="container mt-5">
+        <div class="header mb-4">
+            <h1 class="text-right">CHORES</h1>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Add Item" aria-label="Add Item" aria-describedby="button-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" id="button-addon2">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section mb-4">
+            <h5>TO DO</h5>
+            <ul class="list-group">
+                <!-- List items with to-do tasks -->
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>Pick up mail</span>
+                    <div class="d-flex align-items-center">
+                        <div class="custom-control custom-switch mr-2">
+                            <input type="checkbox" class="custom-control-input" id="switch1">
+                            <label class="custom-control-label" for="switch1"></label>
+                        </div>
+                        <button class="btn btn-danger btn-sm delete-btn">x</button>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>Buy cat food</span>
+                    <div class="d-flex align-items-center">
+                        <div class="custom-control custom-switch mr-2">
+                            <input type="checkbox" class="custom-control-input" id="switch2">
+                            <label class="custom-control-label" for="switch2"></label>
+                        </div>
+                        <button class="btn btn-danger btn-sm delete-btn">x</button>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>Get gift for grandma</span>
+                    <div class="d-flex align-items-center">
+                        <div class="custom-control custom-switch mr-2">
+                            <input type="checkbox" class="custom-control-input" id="switch3">
+                            <label class="custom-control-label" for="switch3"></label>
+                        </div>
+                        <button class="btn btn-danger btn-sm delete-btn">x</button>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>Doctor's appointment</span>
+                    <div class="d-flex align-items-center">
+                        <div class="custom-control custom-switch mr-2">
+                            <input type="checkbox" class="custom-control-input" id="switch4">
+                            <label class="custom-control-label" for="switch4"></label>
+                        </div>
+                        <button class="btn btn-danger btn-sm delete-btn">x</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="section mb-4">
+            <h5>COMPLETED</h5>
+            <ul class="list-group">
+                <!-- List items with completed tasks -->
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>Renew registration</span>
+                    <div class="d-flex align-items-center">
+                        <div class="custom-control custom-switch mr-2">
+                            <input type="checkbox" class="custom-control-input" id="switch5" checked>
+                            <label class="custom-control-label" for="switch5"></label>
+                        </div>
+                        <button class="btn btn-danger btn-sm delete-btn">x</button>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>HIIT workout</span>
+                    <div class="d-flex align-items-center">
+                        <div class="custom-control custom-switch mr-2">
+                            <input type="checkbox" class="custom-control-input" id="switch6" checked>
+                            <label class="custom-control-label" for="switch6"></label>
+                        </div>
+                        <button class="btn btn-danger btn-sm delete-btn">x</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
