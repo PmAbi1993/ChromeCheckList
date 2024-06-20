@@ -9,6 +9,12 @@ function init() {
             chores = data;
             createList(chores, 'todo-list', false);
             createList(chores, 'completed-list', true);
+
+            // Hide "Not applicable" section initially
+            const notApplicableSection = document.querySelector('.section.not-applicable');
+            if (notApplicableSection) {
+                notApplicableSection.style.display = 'none';
+            }
         })
         .catch(error => console.error('Error fetching JSON:', error));
 
@@ -61,6 +67,12 @@ function toggleExcludeItem(itemId) {
     // Recreate the lists to reflect the changes
     createList(chores, 'todo-list', false);
     createList(chores, 'completed-list', true);
+
+    // Update the display of the "Not applicable" section
+    const notApplicableSection = document.querySelector('.section.not-applicable');
+    if (notApplicableSection) {
+        notApplicableSection.style.display = excludedReviewItems.length > 0 ? 'block' : 'none';
+    }
 }
 
 function addItem() {
@@ -88,7 +100,7 @@ function updateStatus(index, isChecked) {
 function generateChecklist() {
     const prChecklist = generateMarkdownTable(chores.filter(item => !excludedReviewItems.includes(item.index) && item.status !== 'NA'));
     const notApplicableItems = chores.filter(item => excludedReviewItems.includes(item.index));
-    const notApplicable = notApplicableItems.length > 0 ? generateMarkdownTable(notApplicableItems, 'NA') : '';
+    const notApplicable = notApplicableItems.length > 0 ? generateNotApplicableMarkdownTable(notApplicableItems) : '';
 
     let markdown = `
 -------------------
@@ -107,14 +119,29 @@ ${notApplicable}
     }
 
     copyToClipboard(markdown.trim());
+
+    // Hide "Not applicable" section if there are no excluded items
+    const notApplicableSection = document.querySelector('.section.not-applicable');
+    if (notApplicableSection) {
+        notApplicableSection.style.display = notApplicableItems.length > 0 ? 'block' : 'none';
+    }
 }
 
-function generateMarkdownTable(items, defaultStatus) {
+function generateMarkdownTable(items) {
     let table = `| **Index** | **Review task** | **Status** |\n`;
     table += `| --- | --- | --- |\n`;
     items.forEach(item => {
         const status = item.status !== undefined ? item.status : 'No';
         table += `| ${item.index} | ${item.title} | ${status} |\n`;
+    });
+    return table;
+}
+
+function generateNotApplicableMarkdownTable(items) {
+    let table = `| **Index** | **Review task** |\n`;
+    table += `| --- | --- |\n`;
+    items.forEach(item => {
+        table += `| ${item.index} | ${item.title} |\n`;
     });
     return table;
 }
