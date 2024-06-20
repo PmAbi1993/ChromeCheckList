@@ -1,25 +1,35 @@
 document.addEventListener('DOMContentLoaded', init);
 
-const excludedReviewItems = []; // Array to store excluded item IDs
+let excludedReviewItems = []; // Array to store excluded item IDs
 let chores = []; // Array to store the fetched chores
+let currentTabUrl = '';
 
 function init() {
-    fetchChores()
-        .then(data => {
-            chores = data;
-            createList(chores, 'todo-list', false);
-            createList(chores, 'completed-list', true);
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        currentTabUrl = tabs[0].url;
+        loadState(currentTabUrl);
 
-            // Hide "Not applicable" section initially
-            const notApplicableSection = document.querySelector('.section.not-applicable');
-            if (notApplicableSection) {
-                notApplicableSection.style.display = 'none';
-            }
-        })
-        .catch(error => console.error('Error fetching JSON:', error));
+        fetchChores()
+            .then(data => {
+                // Update chores with the data from JSON, but keep the statuses from the local storage if they exist
+                chores = data.map(item => {
+                    const existingItem = chores.find(chore => chore.index === item.index);
+                    return existingItem ? { ...item, status: existingItem.status } : { ...item, status: 'No' };
+                });
+                createList(chores, 'todo-list', false);
+                createList(chores, 'completed-list', true);
 
-    document.getElementById('add-item-button').addEventListener('click', addItem);
-    document.getElementById('generate-checklist').addEventListener('click', generateChecklist);
+                // Hide "Not applicable" section initially
+                const notApplicableSection = document.querySelector('.section.not-applicable');
+                if (notApplicableSection) {
+                    notApplicableSection.style.display = excludedReviewItems.length > 0 ? 'block' : 'none';
+                }
+            })
+            .catch(error => console.error('Error fetching JSON:', error));
+
+        document.getElementById('add-item-button').addEventListener('click', addItem);
+        document.getElementById('generate-checklist').addEventListener('click', generateChecklist);
+    });
 }
 
 function fetchChores() {
@@ -39,7 +49,7 @@ function createList(data, listId, isExcluded) {
                 <span>${item.title}</span>
                 <div class="d-flex align-items-center">
                     <div class="custom-control custom-switch mr-2">
-                        <input type="checkbox" class="custom-control-input" id="switch${item.index}">
+                        <input type="checkbox" class="custom-control-input" id="switch${item.index}" ${item.status === 'Yes' ? 'checked' : ''}>
                         <label class="custom-control-label" for="switch${item.index}"></label>
                     </div>
                     <button class="btn btn-danger btn-sm delete-btn" data-id="${item.index}">x</button>
@@ -68,6 +78,9 @@ function toggleExcludeItem(itemId) {
     createList(chores, 'todo-list', false);
     createList(chores, 'completed-list', true);
 
+    // Save state to local storage
+    saveState(currentTabUrl);
+
     // Update the display of the "Not applicable" section
     const notApplicableSection = document.querySelector('.section.not-applicable');
     if (notApplicableSection) {
@@ -82,11 +95,14 @@ function addItem() {
         const newItem = {
             index: chores.length ? chores[chores.length - 1].index + 1 : 1,
             title: newItemTitle,
-            status: 'Pending'
+            status: 'No'
         };
         chores.push(newItem);
         newItemInput.value = '';
         createList(chores, 'todo-list', false);
+        
+        // Save state to local storage
+        saveState(currentTabUrl);
     }
 }
 
@@ -95,6 +111,9 @@ function updateStatus(index, isChecked) {
     if (item) {
         item.status = isChecked ? 'Yes' : 'No';
     }
+
+    // Save state to local storage
+    saveState(currentTabUrl);
 }
 
 function generateChecklist() {
@@ -153,4 +172,20 @@ function copyToClipboard(text) {
     textArea.select();
     document.execCommand("copy");
     document.body.removeChild(textArea);
+}
+
+function saveState(url) {
+    const state = {
+        chores,
+        excludedReviewItems
+    };
+    localStorage.setItem(`checklistState_${encodeURIComponent(url)}`, JSON.stringify(state));
+}
+
+function loadState(url) {
+    const state = JSON.parse(localStorage.getItem(`checklistState_${encodeURIComponent(url)}`));
+    if (state) {
+        chores = state.chores;
+        excludedReviewItems = state.excludedReviewItems; // Replace the array entirely
+    }
 }
