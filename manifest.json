@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Checklist",
+  "version": "0.1",
+  "description": "Description of your extension.",
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": "checklist.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["chores.json", "jquery.min.js", "popper.min.js"],
+      "matches": ["<all_urls>"]
+    }
+],"permissions": [
+ "storage"
+]
+}
