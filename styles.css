@@ -105,3 +105,9 @@ body {
   display: flex;
   align-items: center;
 }
+
+/* Button styles */
+.btn-block {
+  display: block;
+  width: 100%;
+}

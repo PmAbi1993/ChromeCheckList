@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chores List</title>
+    <title>Review Checklist</title>
     <link rel="stylesheet" href="styles.css">
     <link href="bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -11,28 +11,30 @@
 <body class="bg-dark text-white">
     <div class="container mt-5">
         <div class="header mb-4">
-            <h1 class="text-right">CHORES</h1>
+            <h1 class="text-right">Review Checklist</h1>
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Add Item" aria-label="Add Item" aria-describedby="button-addon2">
+                <input type="text" class="form-control" placeholder="Add Item" aria-label="Add Item" aria-describedby="button-addon2" id="new-item-input">
                 <div class="input-group-append">
-                    <button class="btn btn-primary" type="button" id="button-addon2">+</button>
+                    <button class="btn btn-primary" type="button" id="add-item-button">+</button>
                 </div>
             </div>
         </div>
 
         <div class="section mb-4">
-            <h5>TO DO</h5>
+            <h5>To Review</h5>
             <ul class="list-group" id="todo-list">
                 <!-- List items with to-do tasks will be populated here by JavaScript -->
             </ul>
         </div>
 
         <div class="section mb-4">
-            <h5>COMPLETED</h5>
+            <h5>Not applicable</h5>
             <ul class="list-group" id="completed-list">
                 <!-- List items with completed tasks will be populated here by JavaScript -->
             </ul>
         </div>
+
+        <button class="btn btn-primary btn-block mt-3" type="button" id="generate-checklist">Generate Checklist</button>
     </div>
 
     <script src="jquery.min.js"></script>
