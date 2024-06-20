@@ -43,6 +43,10 @@ function createList(data, listId, isExcluded) {
 
             // Add event listener for the delete button
             listItem.querySelector('.delete-btn').addEventListener('click', () => toggleExcludeItem(item.index));
+
+            // Add event listener for the switch
+            const switchInput = listItem.querySelector('.custom-control-input');
+            switchInput.addEventListener('change', () => updateStatus(item.index, switchInput.checked));
         }
     });
 }
@@ -74,10 +78,17 @@ function addItem() {
     }
 }
 
+function updateStatus(index, isChecked) {
+    const item = chores.find(item => item.index === index);
+    if (item) {
+        item.status = isChecked ? 'Yes' : 'No';
+    }
+}
+
 function generateChecklist() {
-    const prChecklist = generateMarkdownTable(chores.filter(item => !excludedReviewItems.includes(item.index)), 'Pending');
+    const prChecklist = generateMarkdownTable(chores.filter(item => !excludedReviewItems.includes(item.index) && item.status !== 'NA'));
     const notApplicableItems = chores.filter(item => excludedReviewItems.includes(item.index));
-    const notApplicable = notApplicableItems.length > 0 ? generateMarkdownTable(notApplicableItems, 'Not applicable') : '';
+    const notApplicable = notApplicableItems.length > 0 ? generateMarkdownTable(notApplicableItems, 'NA') : '';
 
     let markdown = `
 -------------------
@@ -98,10 +109,11 @@ ${notApplicable}
     copyToClipboard(markdown.trim());
 }
 
-function generateMarkdownTable(items, status) {
+function generateMarkdownTable(items, defaultStatus) {
     let table = `| **Index** | **Review task** | **Status** |\n`;
     table += `| --- | --- | --- |\n`;
     items.forEach(item => {
+        const status = item.status !== undefined ? item.status : 'No';
         table += `| ${item.index} | ${item.title} | ${status} |\n`;
     });
     return table;
