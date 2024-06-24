@@ -27,6 +27,8 @@ function init() {
 
                 // Check if "Select All" should be checked initially
                 updateSelectAllToggle();
+                // Enable or disable the "Select All" toggle based on the "Not applicable" list
+                updateSelectAllState();
             })
             .catch(error => console.error('Error fetching JSON:', error));
 
@@ -77,6 +79,9 @@ function createList(data, listId, isExcluded) {
             });
         }
     });
+
+    // Enable or disable the "Select All" toggle based on the "Not applicable" list
+    updateSelectAllState();
 }
 
 function toggleExcludeItem(itemId) {
@@ -98,6 +103,9 @@ function toggleExcludeItem(itemId) {
     if (notApplicableSection) {
         notApplicableSection.style.display = excludedReviewItems.length > 0 ? 'block' : 'none';
     }
+
+    // Enable or disable the "Select All" toggle based on the "Not applicable" list
+    updateSelectAllState();
 }
 
 function addItem() {
@@ -217,6 +225,12 @@ function updateSelectAllToggle() {
     const selectAllSwitch = document.getElementById('select-all-switch');
     const allSelected = chores.every(item => item.status === 'Yes');
     selectAllSwitch.checked = allSelected;
+}
+
+// New function to enable or disable the "Select All" toggle based on the "Not applicable" list
+function updateSelectAllState() {
+    const selectAllSwitch = document.getElementById('select-all-switch');
+    selectAllSwitch.disabled = excludedReviewItems.length > 0;
 }
 
 // Function to show a notification
