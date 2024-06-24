@@ -21,7 +21,16 @@
         </div>
 
         <div class="section mb-4">
-            <h5>To Review</h5>
+            <div class="d-flex justify-content-between align-items-center">
+                <h5>To Review</h5>
+                <div class="d-flex align-items-center">
+                    <span>Select All</span>
+                    <div class="custom-control custom-switch ml-2">
+                        <input type="checkbox" class="custom-control-input" id="select-all-switch">
+                        <label class="custom-control-label" for="select-all-switch"></label>
+                    </div>
+                </div>
+            </div>
             <ul class="list-group" id="todo-list">
                 <!-- List items with to-do tasks will be populated here by JavaScript -->
             </ul>

@@ -29,6 +29,7 @@ function init() {
 
         document.getElementById('add-item-button').addEventListener('click', addItem);
         document.getElementById('generate-checklist').addEventListener('click', generateChecklist);
+        document.getElementById('select-all-switch').addEventListener('change', toggleSelectAll);
     });
 }
 
@@ -188,4 +189,14 @@ function loadState(url) {
         chores = state.chores;
         excludedReviewItems = state.excludedReviewItems; // Replace the array entirely
     }
+}
+
+function toggleSelectAll() {
+    const selectAllSwitch = document.getElementById('select-all-switch');
+    const isChecked = selectAllSwitch.checked;
+    chores.forEach(item => {
+        item.status = isChecked ? 'Yes' : 'No';
+    });
+    createList(chores, 'todo-list', false);
+    saveState(currentTabUrl);
 }
