@@ -31,7 +31,12 @@ function init() {
             .catch(error => console.error('Error fetching JSON:', error));
 
         document.getElementById('add-item-button').addEventListener('click', addItem);
-        document.getElementById('generate-checklist').addEventListener('click', generateChecklist);
+        document.getElementById('generate-checklist').addEventListener('click', () => {
+            generateChecklist();
+            showNotification('Checklist copied to your clipboard.');
+            // Close the extension after a short delay
+            setTimeout(closeExtension, 2000);
+        });
         document.getElementById('select-all-switch').addEventListener('change', toggleSelectAll);
     });
 }
@@ -212,4 +217,21 @@ function updateSelectAllToggle() {
     const selectAllSwitch = document.getElementById('select-all-switch');
     const allSelected = chores.every(item => item.status === 'Yes');
     selectAllSwitch.checked = allSelected;
+}
+
+// Function to show a notification
+function showNotification(message) {
+    const notificationId = 'checklist-notification';
+    chrome.notifications.create(notificationId, {
+        type: 'basic',
+        iconUrl: 'checklist.png',
+        title: 'Checklist Notification',
+        message: message,
+        priority: 2
+    });
+}
+
+// Function to close the Chrome extension
+function closeExtension() {
+    window.close();
 }

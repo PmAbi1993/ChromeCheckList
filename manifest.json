@@ -9,10 +9,19 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["chores.json", "jquery.min.js", "popper.min.js"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "chores.json",
+        "jquery.min.js",
+        "popper.min.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
-],"permissions": [
- "storage", "activeTab"
-]
+  ],
+  "permissions": [
+    "storage",
+    "activeTab",
+    "notifications"
+  ]
 }
