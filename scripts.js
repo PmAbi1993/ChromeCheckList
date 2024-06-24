@@ -24,6 +24,9 @@ function init() {
                 if (notApplicableSection) {
                     notApplicableSection.style.display = excludedReviewItems.length > 0 ? 'block' : 'none';
                 }
+
+                // Check if "Select All" should be checked initially
+                updateSelectAllToggle();
             })
             .catch(error => console.error('Error fetching JSON:', error));
 
@@ -63,7 +66,10 @@ function createList(data, listId, isExcluded) {
 
             // Add event listener for the switch
             const switchInput = listItem.querySelector('.custom-control-input');
-            switchInput.addEventListener('change', () => updateStatus(item.index, switchInput.checked));
+            switchInput.addEventListener('change', () => {
+                updateStatus(item.index, switchInput.checked);
+                updateSelectAllToggle(); // Check the state of all checkboxes whenever one changes
+            });
         }
     });
 }
@@ -199,4 +205,11 @@ function toggleSelectAll() {
     });
     createList(chores, 'todo-list', false);
     saveState(currentTabUrl);
+}
+
+// New function to update the "Select All" toggle based on the state of all checkboxes
+function updateSelectAllToggle() {
+    const selectAllSwitch = document.getElementById('select-all-switch');
+    const allSelected = chores.every(item => item.status === 'Yes');
+    selectAllSwitch.checked = allSelected;
 }
