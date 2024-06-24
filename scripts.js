@@ -61,7 +61,7 @@ function createList(data, listId, isExcluded) {
                         <input type="checkbox" class="custom-control-input" id="switch${item.index}" ${item.status === 'Yes' ? 'checked' : ''}>
                         <label class="custom-control-label" for="switch${item.index}"></label>
                     </div>
-                    <button class="btn btn-danger btn-sm delete-btn" data-id="${item.index}">x</button>
+                    <button class="btn btn-sm delete-btn" data-id="${item.index}">x</button>
                 </div>
             `;
             list.appendChild(listItem); // Add the list item to the respective list
