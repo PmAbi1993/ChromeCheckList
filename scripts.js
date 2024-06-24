@@ -24,11 +24,20 @@ function init() {
                 if (notApplicableSection) {
                     notApplicableSection.style.display = excludedReviewItems.length > 0 ? 'block' : 'none';
                 }
+
+                // Check if "Select All" should be checked initially
+                updateSelectAllToggle();
             })
             .catch(error => console.error('Error fetching JSON:', error));
 
         document.getElementById('add-item-button').addEventListener('click', addItem);
-        document.getElementById('generate-checklist').addEventListener('click', generateChecklist);
+        document.getElementById('generate-checklist').addEventListener('click', () => {
+            generateChecklist();
+            showNotification('Checklist copied to your clipboard.');
+            // Close the extension after a short delay
+            setTimeout(closeExtension, 2000);
+        });
+        document.getElementById('select-all-switch').addEventListener('change', toggleSelectAll);
     });
 }
 
@@ -52,7 +61,7 @@ function createList(data, listId, isExcluded) {
                         <input type="checkbox" class="custom-control-input" id="switch${item.index}" ${item.status === 'Yes' ? 'checked' : ''}>
                         <label class="custom-control-label" for="switch${item.index}"></label>
                     </div>
-                    <button class="btn btn-danger btn-sm delete-btn" data-id="${item.index}">x</button>
+                    <button class="btn btn-sm delete-btn" data-id="${item.index}">x</button>
                 </div>
             `;
             list.appendChild(listItem); // Add the list item to the respective list
@@ -62,7 +71,10 @@ function createList(data, listId, isExcluded) {
 
             // Add event listener for the switch
             const switchInput = listItem.querySelector('.custom-control-input');
-            switchInput.addEventListener('change', () => updateStatus(item.index, switchInput.checked));
+            switchInput.addEventListener('change', () => {
+                updateStatus(item.index, switchInput.checked);
+                updateSelectAllToggle(); // Check the state of all checkboxes whenever one changes
+            });
         }
     });
 }
@@ -188,4 +200,38 @@ function loadState(url) {
         chores = state.chores;
         excludedReviewItems = state.excludedReviewItems; // Replace the array entirely
     }
+}
+
+function toggleSelectAll() {
+    const selectAllSwitch = document.getElementById('select-all-switch');
+    const isChecked = selectAllSwitch.checked;
+    chores.forEach(item => {
+        item.status = isChecked ? 'Yes' : 'No';
+    });
+    createList(chores, 'todo-list', false);
+    saveState(currentTabUrl);
+}
+
+// New function to update the "Select All" toggle based on the state of all checkboxes
+function updateSelectAllToggle() {
+    const selectAllSwitch = document.getElementById('select-all-switch');
+    const allSelected = chores.every(item => item.status === 'Yes');
+    selectAllSwitch.checked = allSelected;
+}
+
+// Function to show a notification
+function showNotification(message) {
+    const notificationId = 'checklist-notification';
+    chrome.notifications.create(notificationId, {
+        type: 'basic',
+        iconUrl: 'checklist.png',
+        title: 'Checklist Notification',
+        message: message,
+        priority: 2
+    });
+}
+
+// Function to close the Chrome extension
+function closeExtension() {
+    window.close();
 }

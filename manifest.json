@@ -2,17 +2,26 @@
   "manifest_version": 3,
   "name": "Checklist",
   "version": "0.1",
-  "description": "Description of your extension.",
+  "description": "Checklist maker for Pull requests\n image: Flaticon.com'. This cover has been designed using images from Flaticon.com",
   "action": {
     "default_popup": "index.html",
     "default_icon": "checklist.png"
   },
   "web_accessible_resources": [
     {
-      "resources": ["chores.json", "jquery.min.js", "popper.min.js"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "chores.json",
+        "jquery.min.js",
+        "popper.min.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
-],"permissions": [
- "storage", "activeTab"
-]
+  ],
+  "permissions": [
+    "storage",
+    "activeTab",
+    "notifications"
+  ]
 }
