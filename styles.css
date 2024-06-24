@@ -37,6 +37,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 5px;
 }
 
 /* Custom iOS-like switch styles */
@@ -49,7 +50,7 @@ body {
   display: inline-block;
   width: 44px;
   height: 24px;
-  background-color: #7f8c8d;
+  background-color: #b0b0b0;
   border-radius: 12px;
   transition: background-color 0.3s;
   vertical-align: middle;
@@ -64,15 +65,16 @@ body {
   height: 20px;
   background-color: #fff;
   border-radius: 50%;
-  transition: transform 0.3s;
+  transition: transform 0.3s, background-color 0.3s;
 }
 
 .custom-switch .custom-control-input:checked ~ .custom-control-label {
-  background-color: #27ae60;
+  background-color: #4cd964; /* Green color from the image */
 }
 
 .custom-switch .custom-control-input:checked ~ .custom-control-label::before {
   transform: translateX(20px);
+  background-color: #fff; /* Ensure the circle remains white when checked */
 }
 
 /* Custom delete button styles */
@@ -115,4 +117,33 @@ body {
 /* Add padding below the Generate Checklist button */
 #generate-checklist {
   margin-bottom: 20px; /* Adjust the value to your preference */
+  background-color: #007bff;
+  border: none;
+  color: #ecf0f1;
+}
+
+/* Notification styles */
+.notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #27ae60;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  opacity: 0;
+  animation: fadein 0.5s forwards, fadeout 0.5s 2.5s forwards;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeout {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
